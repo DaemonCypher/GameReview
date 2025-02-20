@@ -1,0 +1,124 @@
+{% extends 'base.html' %} {% block title %}Settings{% endblock %} {% block
+content %}
+
+<div class="pure-menu pure-menu-horizontal center user-menu">
+  <ul class="pure-menu-list">
+    <li
+      class="pure-menu-item {% if active_page == 'profile' %}pure-menu-selected{% endif %}"
+    >
+      <a
+        href="{{ url_for('user_profile', user_id=user.get('user_id')) }}"
+        class="pure-menu-link"
+        style="color: #fff"
+      >
+        Profile
+      </a>
+    </li>
+    <li
+      class="pure-menu-item {% if active_page == 'reviews' %}pure-menu-selected{% endif %}"
+    >
+      <a
+        href="{{ url_for('user_reviews', user_id=user.user_id) }}"
+        class="pure-menu-link"
+        style="color: #fff"
+      >
+        Reviews
+      </a>
+    </li>
+    <li
+      class="pure-menu-item {% if active_page == 'settings' %}pure-menu-selected{% endif %}"
+    >
+      <a href="/user/settings" class="pure-menu-link" style="color: #fff">
+        Settings
+      </a>
+    </li>
+  </ul>
+</div>
+
+<div class="settings-container">
+  {% if error_message %}
+  <div class="alert alert-danger">{{ error_message }}</div>
+  {% endif %} {% if success_message %}
+  <div class="alert alert-success">{{ success_message }}</div>
+  {% endif %}
+  <div
+    class="profile-image-container"
+    style="text-align: center; margin-bottom: 20px"
+  >
+    <img
+      src="{% if user.picture %}{{ user.picture }}{% else %}/static/images/avatar.png{% endif %}"
+      alt="Profile Image"
+      class="profile-image"
+    />
+  </div>
+
+  <form
+    class="pure-form pure-form-aligned"
+    method="POST"
+    enctype="multipart/form-data"
+    action="{{ url_for('user_settings')}}"
+  >
+    <fieldset>
+      <div class="pure-control-group">
+        <label for="picture">Change Profile Image (enter url to image):</label>
+        <input id="picture" name="picture" type="text" value={{user.get('picture')}} />
+      </div>
+
+      <div class="pure-control-group">
+        <label for="new-username">Username:</label>
+        <input
+          id="new-username"
+          name="new-username"
+          type="text"
+          value="{{ user.get('username') }}"
+          required
+        />
+      </div>
+
+      <div class="pure-control-group">
+        <label for="new-email">Email:</label>
+        <input
+          id="new-email"
+          name="new-email"
+          type="email"
+          value="{{ user.get('email') }}"
+          readonly
+        />
+      </div>
+
+      <div class="pure-control-group">
+        <label for="descript">Description:</label>
+        <textarea id="descript" name="descript" rows="4" cols="50">
+          {{ user.get('descript') }}</textarea
+        >
+      </div>
+
+      <div class="save">
+        <button
+          type="submit"
+          class="pure-button pure-button-primary save-button"
+        >
+          Save Changes
+        </button>
+      </div>
+    </fieldset>
+  </form>
+  <form
+    action="{{ url_for('delete_account') }}"
+    method="POST"
+    onsubmit="return confirmDelete()"
+  >
+    <button type="submit" class="pure-button delete-button">
+      Delete Account
+    </button>
+  </form>
+</div>
+<script>
+  function confirmDelete() {
+    return confirm(
+      "Are you sure you want to delete your account? This action cannot be undone."
+    );
+  }
+</script>
+
+{% endblock %}

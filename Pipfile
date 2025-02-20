@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+steam = "*"
+igdb-api-v4 = "*"
+authlib = "*"
+requests = "*"
+protobuf = "*"
+python-dotenv = "*"
+gunicorn = "*"
+psycopg2 = "*"
+psycopg2-binary = "*"
+pillow = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"

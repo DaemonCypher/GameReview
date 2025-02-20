@@ -1,0 +1,60 @@
+{% extends 'base.html' %} {% block title %}User Profile{% endblock %} {% block
+content %}
+<div class="pure-menu pure-menu-horizontal center user-menu">
+  <ul class="pure-menu-list">
+    <li
+      class="pure-menu-item {% if active_page == 'profile' %}pure-menu-selected{% endif %}"
+    >
+      <a
+        href="{{ url_for('user_profile',user_id=profile_info.user_id) }}"
+        class="pure-menu-link"
+        style="color: #fff"
+      >
+        Profile
+      </a>
+    </li>
+    <li
+      class="pure-menu-item {% if active_page == 'reviews' %}pure-menu-selected{% endif %}"
+    >
+      <a
+        href="{{ url_for('user_reviews', user_id=profile_info.user_id) }}"
+        class="pure-menu-link"
+        style="color: #fff"
+      >
+        Reviews
+      </a>
+    </li>
+    {% if is_own_profile %}
+    <li
+      class="pure-menu-item {% if active_page == 'settings' %}pure-menu-selected{% endif %}"
+    >
+      <a href="/user/settings" class="pure-menu-link" style="color: #fff">
+        Settings
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</div>
+
+<div class="user-profile">
+  <div class="profile-image">
+    {%if profile_info.picture %}
+    <img
+      src="{{ profile_info.picture}}"
+      alt="Profile Image"
+    />
+    {%else%}
+    <img src="/static/images/avatar.png" alt="Profile Image" />
+    {%endif%}
+  </div>
+  <div class="profile-details">
+    <h2>{{ profile_info.get('username') }}</h2>
+    <p>
+      Profile description: {{ profile_info.get('descript') or "No description
+      available." }}
+    </p>
+    <p>Reviews: {{review_count}}</p>
+  </div>
+</div>
+
+{% endblock %}

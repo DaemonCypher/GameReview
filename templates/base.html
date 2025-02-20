@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}GameReview{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css"
+      integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/grids-responsive-min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/base.css') }}"
+    />
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    {% block additionalHeaders %} {% endblock %}
+  </head>
+  <body>
+    <!-- Header -->
+    {% if request.endpoint != 'complete_profile' %}
+    <div class="header pure-g">
+      <div class="pure-u-1-8">
+        <a href="/" class="pure-menu-heading"
+          ><img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="Logo"
+        /></a>
+      </div>
+
+      <div class="pure-u-2-5">
+        <form class="pure-form" action="/results" id="searchForm" method="post">
+          <input
+            type="text"
+            class="pure-input-rounded search-input"
+            placeholder="Search games..."
+            name="query"
+            id="query"
+          />
+          <button
+            type="submit"
+            class="pure-button pure-button-primary"
+            id="submit-btn"
+          >
+            Search
+          </button>
+        </form>
+      </div>
+
+      <div class="navbar-content pure-u-2-5" style="text-align: right">
+        <a href="/" class="nav-link">Home</a>
+        <a href="/games" class="nav-link">Games</a>
+        {% if user %}
+        <!-- Logged-in version -->
+        <div class="user-dropdown">
+          <img
+            src="{% if user['picture'] %}{{ user['picture'] }}{% else %}/static/images/avatar.png{% endif %}"
+            alt="User Avatar"
+            class="user-avatar"
+          />
+
+          <div class="dropdown-content">
+            <a href="{{ url_for('user_profile', user_id=user.get('user_id')) }}"
+              >Profile</a
+            >
+            <a href="/logout">Log Out</a>
+          </div>
+        </div>
+        {% else %}
+        <!-- Not logged-in version -->
+        <a href="/login" class="pure-button pure-button-secondary">Log In</a>
+        {% endif %}
+      </div>
+    </div>
+    {%endif%}
+    <!-- Content -->
+    <div class="content">{% block content %}{% endblock %}</div>
+
+    <!-- Footer -->
+    <div class="footer pure-g">
+      <div class="pure-u-1 pure-u-md-1-3 footer-section">
+        <h4>About Us</h4>
+        <p>
+          GameReview is your go-to platform for honest game reviews and
+          discussions.
+        </p>
+      </div>
+      <div class="pure-u-1 pure-u-md-1-3 footer-section">
+        <h4>Contact</h4>
+        <p>Email: support@gamereview.com</p>
+        <p>Phone: +123 456 7890</p>
+      </div>
+      <div class="pure-u-1 pure-u-md-1-3 footer-section">
+        <h4>Follow Us</h4>
+        <p>
+          <a href="#" class="footer-link">Twitter</a> |
+          <a href="#" class="footer-link">Facebook</a> |
+          <a href="#" class="footer-link">Instagram</a>
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

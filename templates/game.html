@@ -1,0 +1,83 @@
+{% extends "base.html" %} {% block title %}Game Review{% endblock %}
+{% block content %}
+    <div class="pure-g game-info-container">
+        <div class="pure-u-2-24"></div>
+        <div class="pure-u-22-24">
+            <div class="pure-g">
+                <div class="pure-u-1-5">
+                    {% if valid %}
+                        <img class="pure-img" src="http:{{ game_data.get('cover').get('url') | replace('t_thumb', 't_720p') }}" alt="Cover image for {{ game_data.name }}">
+                    {% else %}
+                        <img class="pure-img" src="{{ url_for('static', filename='images/null.png') }}"alt="No cover image available for game"/>
+                        <p>No images available</p>
+                    {% endif %}
+                </div>
+                <div class="pure-u-3-5" style="margin-left: 1em;">
+                    <h1>{{ game_data.name }}</h1>
+                    <p>{{ game_data.summary }}</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% include 'game_toolbar.html' %}
+    <div class="pure-g btn-container">
+        <div id="post-btn-container">
+            <a id="post-button-reviews" href="{{ url_for("post_review", gameid=game_data.id)}}" class="post-button">+Post Review</a>
+            <a id="post-button-topics" href="{{ url_for("post_topic", gameid=game_data.id)}}" class="post-button">+Post Topic</a>
+        </div>
+    </div>
+    <div class="pure-g">
+        <div class="pure-u-1-5"></div>
+        <div class="pure-u-3-5">
+            {% if reviews %}
+            <div id="reviews">
+                {% for review in reviews %}
+                <div class="game-sec" onclick="location.href='/review/{{review.post_id}}';">
+                    <div style="padding:.25em; margin: 1em;">
+                        <h2 style="margin-bottom: .2em; margin-top: .2em">{{ review.title }}
+                        {%for n in range(review.rating) %}
+                            &#9733;
+                        {%endfor%}
+                        {%for n in range(5 - review.rating) %}
+                            &#9734;
+                        {%endfor%}
+                    </h2>
+                    <h6 class="author">By: {{ review.username }}</h6>
+                    <p style="text-indent: 3em;">{{ review.description }}</p>
+                    <p style="text-indent: 3em;">{{ review.likes }}</p>
+                    </div>
+                </div>
+
+            {% endfor %}
+            </div>
+            {% else %}
+            <div id="reviews">
+                NO REVIEWS HERE CREATE ONE!
+            </div>
+            {% endif %}
+
+            {% if topics %}
+            <div id="topics" hidden>
+                {% for topic in topics %}
+                <div class="game-sec" onclick="location.href='/topic/{{topic.post_id}}';">
+                    <div style="padding:.25em; margin: 1em;">
+                        <h2 style="margin-bottom: .2em; margin-top: .2em">{{ topic.title }}</h2>
+                    <h6 class="author">By: {{ topic.username }}</h6>
+                    <p style="text-indent: 3em;">{{ topic.description }}</p>
+                    <p style="text-indent: 3em;">{{ topic.likes }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+            {% else %}
+                <div id="topics" hidden> NO TOPICS EXIST YET</div>
+            {% endif %}
+        </div>
+        <div class="pure-u-1-5">
+        </div>
+        <div class="pure-u-1-5"></div>
+        
+    </div>
+    
+{% endblock %}
